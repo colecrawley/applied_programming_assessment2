@@ -49,7 +49,6 @@ Menu::Menu(std::string filepath)
                 ItemsonMenu.push_back(new Beverage(name, price, calories, volume, abv));
             }
         }
-        
         file.close();
     }
 }
