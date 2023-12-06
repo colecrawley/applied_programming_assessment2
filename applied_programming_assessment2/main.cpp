@@ -6,9 +6,19 @@
 //
 
 #include <iostream>
+#include <vector>
+#include <cstring>
+#include "menu.hpp"
+#include "item.hpp"
+#include "Itemlist.hpp"
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+int main()
+{
+    
+    Menu menu = Menu("/Users/colecrawley/Desktop/applied_programming_assessment2/applied_programming_assessment2/applied_programming_assessment2/menu.csv");
+    
+    std::cout << menu.toString();
+    
     return 0;
 }
+

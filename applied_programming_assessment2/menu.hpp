@@ -11,18 +11,22 @@
 #include <stdio.h>
 #include <vector>
 #include "item.hpp"
-#include <string> //could remove if there are errors with this and change itemtype back to char
+#include "Itemlist.hpp"
 
-class Menu
+class Item;
+
+class Menu : public ItemList
 {
 public:
     Menu(std::string filepath);
-    std::string toString() const; //this is to display the menu
+    virtual std::string toString() const override; //this is to display the menu
     
+    void printItemsByType(char itemType) const;
     Item* getItemOnMenu(int index) const;
     int getMenuSize() const;
     Item* findItemByName (const std::string& itemName) const;
-    std::vector<Item*> filterItemsByType(std::string itemtype) const; //could change to char if there are any errors
+    std::vector<Item*> filterItemsByType(char itemtype) const; //has to be char type based on brief
+    ~Menu(); // desctructor 
     
 private:
     std::vector<Item*> ItemsonMenu;

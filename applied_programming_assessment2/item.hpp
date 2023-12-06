@@ -20,6 +20,7 @@ public:
     std::string getFoodName() const;
     double getFoodPrice() const;
     int getFoodCalories() const;
+    virtual char getItemType() const = 0;
     
     virtual std::string toString() const = 0; // This is the pure virtual function that is meant to override in each child class
     
@@ -34,7 +35,8 @@ class Appetiser : public Item
 {
 public:
     Appetiser(std::string name, double price, int calories, bool shareable, bool twoForOne);
-    std::string toString() const override;
+    virtual std::string toString() const override;
+    char getItemType() const override {return 'a';}
     
 private:
     bool shareable;
@@ -46,14 +48,16 @@ class MainCourse : public Item
 {
 public:
     MainCourse(std::string name, double price, int calories);
-    std::string toString() const override;
+    virtual std::string toString() const override;
+    char getItemType() const override {return 'm';}
 };
 
 class Beverage : public Item
 {
 public:
     Beverage(std::string name, double price, int calories, double abv, int volume);
-    std::string toString() const override;
+    virtual std::string toString() const override;
+    char getItemType() const override {return 'b';}
     
 private:
     double abv;

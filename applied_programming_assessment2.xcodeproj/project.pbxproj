@@ -31,6 +31,7 @@
 		B47803612B1E435200B1F763 /* item.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = item.hpp; sourceTree = "<group>"; };
 		B47803632B1E9EDF00B1F763 /* menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = menu.cpp; sourceTree = "<group>"; };
 		B47803642B1E9EDF00B1F763 /* menu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = menu.hpp; sourceTree = "<group>"; };
+		B47803672B1FCD4F00B1F763 /* Itemlist.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Itemlist.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +67,7 @@
 				B47803562B1D3D1400B1F763 /* main.cpp */,
 				B47803602B1E435200B1F763 /* item.cpp */,
 				B47803632B1E9EDF00B1F763 /* menu.cpp */,
+				B47803672B1FCD4F00B1F763 /* Itemlist.hpp */,
 				B47803642B1E9EDF00B1F763 /* menu.hpp */,
 				B47803612B1E435200B1F763 /* item.hpp */,
 			);
