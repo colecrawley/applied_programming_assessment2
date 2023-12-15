@@ -1,15 +1,9 @@
-//
-//  menu.cpp
-//  applied_programming_assessment2
-//
-//  Created by Cole Crawley on 04/12/2023.
-//
 #include <iostream>
-#include "menu.hpp"
-#include "item.hpp"
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include "menu.hpp"
+#include <cstdlib>
 
 Menu::Menu(std::string filepath) {
     std::ifstream file(filepath);
@@ -19,69 +13,94 @@ Menu::Menu(std::string filepath) {
         return;
     }
 
-    std::string line;
+    std::string line = "";
 
     while (std::getline(file, line)) {
-        
-        std::replace(line.begin(), line.end(), ',', ' ');
-
-        std::istringstream iss(line);
-
-        char itemtype;
-        std::string name;
-        double price;
-        int calories;
+        char itemtype = 'O';
+        std::string name = "";
+        double price = 0.0;
+        int calories = 0;
         bool shareable = false;
         bool twoForOne = false;
         double abv = 0.0;
         int volume = 0;
 
-        //std::string temp;
+        int counter = 0;
+        std::string value = "";
 
-        if (!(iss >> itemtype >> std::quoted(name) >> price >> calories)) {
+        for (int i = 0; i <= line.size()-1; i++) {
+            if (line[i] == ',' || i >= line.size()-1) {
+                switch (counter) {
+                    case 0: itemtype = value[0]; break;
+                    case 1: name = value; break;
+                    case 2: price = atof(value.c_str()); break;
+                    case 3: calories = atoi(value.c_str()); break;
+                    case 4: if(value == "y") {
+                        shareable = true;} break;
+                    case 5: if(value == "y") {
+                        twoForOne = true;} break;
+                    case 6: volume = atoi(value.c_str()); break;
+                    case 7: abv = atof(value.c_str()); break;
+                }
+
+                value = "";
+                counter += 1;
+            } else {
+                value += line[i];
+            }
+        }
+
+        if (counter < 4) {
             std::cerr << "Error parsing line: " << line << std::endl;
             continue;
-        }
-        
-        //iss >> itemtype >> std::quoted(name) >> price >> calories;
-
-        if (itemtype == 'a') {
-            
-            char shareableChar, twoForOneChar;
-            if (!(iss >> shareableChar >> twoForOneChar)) {
-                std::cerr << "Error parsing appetizer: " << line << std::endl;
-                continue;
-            }
-            shareable = (shareableChar == 'y');
-            twoForOne = (twoForOneChar == 'y');
-        } else if (itemtype == 'b') {
-            if (!(iss >> volume >> abv)) {
-                std::cerr << "Error parsing beverage: " << line << std::endl;
-                continue;
-            }
         }
 
         switch (itemtype) {
             case 'a':
+            {
+                //char shareableChar = ' ', twoForOneChar = ' ';
+                //std::istringstream iss(name);
+                //iss >> std::quoted(name) >> shareableChar >> twoForOneChar;
+               // if (shareable  == "y");
+                //twoForOne  == "y";
+                //std::cout<<"taste the case:"<<shareable<<twoForOne;
                 ItemsonMenu.push_back(new Appetiser(name, price, calories, shareable, twoForOne));
                 break;
-
+            }
             case 'b':
-                ItemsonMenu.push_back(new Beverage(name, price, calories, abv, volume));
+            {
+                // Check for the presence of volume, abv, and discard remaining values
+                if (volume >= 0 && abv >= 0.0) {
+                    ItemsonMenu.push_back(new Beverage(name, price, calories, abv, volume));
+                } else {
+                    std::cerr << "Error parsing beverage: " << line << std::endl;
+                    continue;
+                }
                 break;
+            }
 
             case 'm':
+            {
                 ItemsonMenu.push_back(new MainCourse(name, price, calories));
                 break;
+            }
 
             default:
+            {
                 std::cerr << "Unknown menu item type: " << itemtype << " in line: " << line << std::endl;
-                continue;
+                break;
+            }
         }
     }
 
     file.close();
 }
+
+
+
+
+
+
 
 void Menu::printItemsByType(char itemType) const {
     std::string category;
@@ -103,8 +122,6 @@ void Menu::printItemsByType(char itemType) const {
 
     std::cout << category << std::endl;
 
-    int index = 1;  // Counter for item numbering
-
     for (const auto& item : ItemsonMenu) {
         if (item->getItemType() == itemType) {
             std::cout << item->toString() << std::endl;
@@ -117,7 +134,7 @@ std::string Menu::toString() const {
     result << "========== Menu By Cole Crawley ==========\n";
 
     for (const auto& item : ItemsonMenu) {
-        result << item->toString() + "\n";
+        result << item->toString() << "\n";
     }
 
     return result.str();
@@ -140,5 +157,3 @@ Item* Menu::getItemOnMenu(int index) const {
         return nullptr;
     }
 }
-
-

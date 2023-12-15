@@ -37,6 +37,8 @@ public:
     Appetiser(std::string name, double price, int calories, bool shareable, bool twoForOne);
     virtual std::string toString() const override;
     char getItemType() const override {return 'a';}
+    bool getFoodShareable();
+    bool getFoodTwoForOne();
     
 private:
     bool shareable;
@@ -58,15 +60,15 @@ public:
     Beverage(std::string name, double price, int calories, double abv, int volume);
     virtual std::string toString() const override;
     char getItemType() const override {return 'b';}
+    int getFoodVolume() const;
+    double getFoodABV() const;
+    
+    
     
 private:
     double abv;
     int volume;
 };
-
-
-
-
 
 
 #endif /* item_hpp */

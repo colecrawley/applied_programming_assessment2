@@ -9,6 +9,7 @@
 #include "menu.hpp"
 #include "Itemlist.hpp"
 #include <sstream>
+#include <iomanip>
 
 Item::Item(std::string name, double price, int calories) : name(name), price(price), calories(calories) {}
 
@@ -43,7 +44,7 @@ std::string Appetiser::toString() const
 {
     std::stringstream result;
     
-    result << Item::getFoodName() << ": $" << Item::getFoodPrice() << ", " << Item::getFoodCalories() << " calories";
+    result << Item::getFoodName() << ": $" << Item::getFoodPrice() << ", " << Item::getFoodCalories() << " calories, ";
     
     //result << Item::toString() << " (Appetiser)";
     
@@ -69,8 +70,17 @@ std::string Appetiser::toString() const
     
     return result.str();
     
-    
 };
+
+bool Appetiser::getFoodShareable()
+{
+    return shareable;
+}
+
+bool Appetiser::getFoodTwoForOne()
+{
+    return twoForOne;
+}
 
 MainCourse::MainCourse(std::string name, double price, int calories) : Item(name, price, calories) {}
 
@@ -90,7 +100,12 @@ std::string Beverage::toString() const
 {
     std::stringstream result;
     
-    result << getFoodName() << ": $" + std::to_string(getFoodPrice()) << ": " << std::to_string(getFoodCalories()) << " calories";
+    result << getFoodName() << ": $" << std::fixed << std::setprecision(2) << getFoodPrice() << ": "
+           << std::to_string(getFoodCalories()) << " calories, " << std::to_string(getFoodVolume())
+           << "ml, " << std::setprecision(2) << getFoodABV() << "%";
+    
+    
+    
     
     //std::stringstream result;
     //result << Item::toString() << " (Beverage), " << volume << "ml, " << abv << "% abv";
@@ -99,4 +114,14 @@ std::string Beverage::toString() const
     result += ", " + std::to_string(volume) + "ml, " + std::to_string(abv) + "% abv";*/
     
     return result.str();
+}
+
+double Beverage::getFoodABV() const
+{
+    return abv;
+}
+
+int Beverage::getFoodVolume() const
+{
+    return volume;
 }
