@@ -5,8 +5,8 @@
 //  Created by Cole Crawley on 05/12/2023.
 //
 
-#ifndef Itemlist_hpp
-#define Itemlist_hpp
+#ifndef ITEMLIST_HPP
+#define ITEMLIST_HPP
 
 #include <stdio.h>
 #include <string>
@@ -18,4 +18,4 @@ public:
     virtual std::string toString() const = 0; //abstract class, meant to be overriden
 };
 
-#endif /* Itemlist_hpp */
+#endif /* ITEMLIST_HPP */

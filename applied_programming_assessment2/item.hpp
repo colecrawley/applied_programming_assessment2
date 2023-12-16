@@ -5,9 +5,8 @@
 //  Created by Cole Crawley on 04/12/2023.
 //
 
-#ifndef item_hpp
-#define item_hpp
-
+#ifndef ITEM_HPP
+#define ITEM_HPP
 #include <stdio.h>
 #include <string>
 
@@ -71,4 +70,4 @@ private:
 };
 
 
-#endif /* item_hpp */
+#endif /* ITEM_HPP*/

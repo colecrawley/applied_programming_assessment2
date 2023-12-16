@@ -2,6 +2,9 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include "utility.hpp"
+#include "Itemlist.hpp"
+#include "item.hpp"
 #include "menu.hpp"
 #include <cstdlib>
 
@@ -132,9 +135,12 @@ void Menu::printItemsByType(char itemType) const {
 std::string Menu::toString() const {
     std::stringstream result;
     result << "========== Menu By Cole Crawley ==========\n";
+    
+    int itemNumber = 1;
 
     for (const auto& item : ItemsonMenu) {
-        result << item->toString() << "\n";
+        result << itemNumber << ".) " << item->toString() << "\n";
+        itemNumber++;
     }
 
     return result.str();
@@ -143,6 +149,7 @@ std::string Menu::toString() const {
 Menu::~Menu() {
     for (auto& item : ItemsonMenu) {
         delete item;
+        item = nullptr;
     }
 }
 
@@ -156,4 +163,20 @@ Item* Menu::getItemOnMenu(int index) const {
     } else {
         return nullptr;
     }
+}
+
+Item* Menu::findItemByName(const std::string &itemName) const
+{
+    
+    std::string lowercaseFood = toLowerCase(itemName);
+    for (const auto& item : ItemsonMenu)
+    {
+        std::string currentFoodName = toLowerCase(item->getFoodName());
+        if (currentFoodName == lowercaseFood)
+        {
+            return item;
+        }
+    }
+    
+    return nullptr;
 }
