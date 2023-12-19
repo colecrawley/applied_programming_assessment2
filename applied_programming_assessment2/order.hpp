@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <vector>
 #include "item.hpp"
-
+#include "menu.hpp"
  class Order
 {
 public:
@@ -19,15 +19,18 @@ public:
     ~Order();
     
     void add(Item* item);
+    
     void remove(int index);
     double calculateTotal() const;
     std::string toString() const; //doesn't need to be virtual because no derived classes
     void printReceipt(const std::string& filePath) const;
     int getOrderSize() const;
     const std::vector<Item*>& getOrderedItems() const;
+    Order(const Menu& menu);
     
 private:
     std::vector<Item*> itemsInOrder;
+
 };
 
 #endif /* ORDER_HPP */

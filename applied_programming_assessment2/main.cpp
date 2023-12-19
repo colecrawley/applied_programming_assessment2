@@ -105,7 +105,7 @@ int main() {
                 
                 const std::vector<Item*>& orderedItems = order.getOrderedItems();
                 
-                for (int i = 0; i < orderedItems.size(); ++i)
+                for (int i = 0; i < order.getOrderSize(); ++i)
                 {
                     std::cout << i + 1 << ".) " << orderedItems[i]->toString() << "\n";
                 }

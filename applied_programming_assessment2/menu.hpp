@@ -19,6 +19,8 @@ class Menu : public ItemList
 public:
     Menu(std::string filepath);
     virtual std::string toString() const override; //this is to display the menu
+    std::string toLowerCase(const std::string& str) const;
+    std::vector<Item*> getItemsForReceipt() const;
     
     void printItemsByType(char itemType) const;
     //void sortByPrice() const;

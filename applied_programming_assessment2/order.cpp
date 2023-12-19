@@ -7,6 +7,7 @@
 
 #include "order.hpp"
 #include "utility.hpp"
+#include "menu.hpp"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -14,13 +15,13 @@
 
 Order::Order() : itemsInOrder() {}
 
-Order::~Order()
+Order::~Order() //don't want to delete items in order because it would be double deletion with items in the menu. we want menu to stay constant and items in order to be pointers to the menu that we can delete and add
 {
-    for (auto& item : itemsInOrder)
+    /*for (auto& item : itemsInOrder)
     {
         delete item;
-        item = nullptr;1
-    }
+        item = nullptr;
+    }*/
 }
 
 void Order::add(Item* item)
@@ -33,9 +34,17 @@ void Order::remove(int index)
 {
     if (index > 0 && index <= static_cast<int>(itemsInOrder.size()))
     {
-        std::cout << itemsInOrder[index - 1]->getFoodName() << " has been removed from your order!" << std::endl;
-        delete itemsInOrder[index - 1];
-        itemsInOrder.erase(itemsInOrder.begin() + index - 1);
+        //std::cout << itemsInOrder[index - 1]->getFoodName() << " has been removed from your order!" << std::endl;
+        
+        Item* removedItem = itemsInOrder[index - 1];
+        if (removedItem)
+        {
+            std::cout << itemsInOrder[index - 1]->getFoodName() << " has been removed from your order!" << std::endl;
+            
+            itemsInOrder.erase(itemsInOrder.begin() + index - 1);
+        }
+        //delete itemsInOrder[index - 1];
+        //itemsInOrder.erase(itemsInOrder.begin() + index - 1);
     }
     else
     {
@@ -46,6 +55,7 @@ void Order::remove(int index)
 double Order::calculateTotal() const
 {
     double total_amount = 0.0;
+    double total_discount = 0.0;
     int eligible_twoForOne = 0;
     
     for (const auto& item : itemsInOrder)
@@ -55,25 +65,24 @@ double Order::calculateTotal() const
         //check for twoforone eligibility
         if (item->getItemType() == 'a' && dynamic_cast<Appetiser*>(item)->getFoodTwoForOne())
         {
+            //eligible_twoForOne++;
+            //total_discount += item->getFoodPrice(); //to keep adding the discounts for total
+            
             eligible_twoForOne++;
+            if (eligible_twoForOne % 2 == 0)
+            {
+                total_discount += item->getFoodPrice();
+            }
         }
     }
     
     if (eligible_twoForOne >= 2)
     {
-        double discount = 0.0;
-        for (const auto& item : itemsInOrder)
-        {
-            if (item->getItemType() == 'a' && dynamic_cast<Appetiser*>(item)->getFoodTwoForOne())
-            {
-                discount = item->getFoodPrice();
-                break;
-            }
-        }
+        //double discount = 0.0;
         
-        total_amount -= discount;
+        total_amount -= total_discount;
         
-        std::cout << "2-4-1 discount has been applied! Your savings is: $" << std::fixed << std::setprecision(2) << discount << std::endl;
+        std::cout << "2-4-1 discount has been applied! Your savings is: $" << std::fixed << std::setprecision(2) << total_discount << std::endl;
     }
     
     return total_amount;
@@ -86,8 +95,11 @@ std::string Order::toString() const
     
     int indexItem = 1; //starts the menu on 1 instead of 0
     
-    double total = 0.0;
-    double savings = 0.0;
+    double total = 0.0; //total
+    double savings = 0.0; // discount
+    int eligible_twoForOne = 0;
+    
+    
     
     
     for (const auto& item: itemsInOrder)
@@ -97,13 +109,26 @@ std::string Order::toString() const
         
         if (item->getItemType() == 'a' && dynamic_cast<Appetiser*>(item)->getFoodTwoForOne())
         {
-            savings += item->getFoodPrice();
+            eligible_twoForOne++;
+            if (eligible_twoForOne % 2 == 0)
+            {
+                savings += item->getFoodPrice();
+            }
+            
+            //savings += item->getFoodPrice();
         }
         
         indexItem++;
     }
     
-    result << "Total: $" << std::fixed << std::setprecision(2) << total << "\n";
+    if (eligible_twoForOne >= 2)
+    {
+        total -= savings;
+        
+        result << "Total: $" << std::fixed << std::setprecision(2) << total << "\n";
+    }
+    
+    //result << "Total: $" << std::fixed << std::setprecision(2) << total << "\n";
     
     if (savings > 0)
     {
@@ -119,6 +144,7 @@ std::string Order::toString() const
 
 void Order::printReceipt(const std::string& filePath) const
 {
+    
     std::ofstream receiptFile(filePath); //receipt.txt file path
     if (receiptFile.is_open())
     {

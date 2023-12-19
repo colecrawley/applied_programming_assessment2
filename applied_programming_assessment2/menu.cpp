@@ -180,3 +180,15 @@ Item* Menu::findItemByName(const std::string &itemName) const
     
     return nullptr;
 }
+
+std::string Menu::toLowerCase(const std::string& str) const
+{
+    std::string result = str;
+    std::transform(result.begin(), result.end(), result.begin(), ::tolower);
+    return result;
+}
+
+std::vector<Item*> Menu::getItemsForReceipt() const
+{
+    return ItemsonMenu;
+}

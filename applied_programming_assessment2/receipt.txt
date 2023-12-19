@@ -1,4 +1,6 @@
 ===== ORDER =====
-(1)Fish & chips: $8.99, 1000 calories
-Total: $8.99
-Savings: $0.00
+(1)Buffalo wings: $3.99, 450 calories,  (twoForOne)
+(2)Buffalo wings: $3.99, 450 calories,  (twoForOne)
+(3)Fish & chips: $8.99, 1000 calories
+Total: $12.98
+Savings: $3.99
