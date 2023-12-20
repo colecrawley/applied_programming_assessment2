@@ -26,7 +26,7 @@ public:
     void printReceipt(const std::string& filePath) const;
     int getOrderSize() const;
     const std::vector<Item*>& getOrderedItems() const;
-    Order(const Menu& menu);
+    //(const Menu& menu);
     
 private:
     std::vector<Item*> itemsInOrder;

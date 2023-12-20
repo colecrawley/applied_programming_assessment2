@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <vector>
 #include "Itemlist.hpp"
+#include "order.hpp"
 
 class Item;
 
@@ -28,6 +29,9 @@ public:
     int getMenuSize() const;
     Item* findItemByName (const std::string& itemName) const;
     std::vector<Item*> filterItemsByType(char itemtype) const; //has to be char type based on brief
+    //void sortMenuByPrice();
+    void sortByMenuPriceAscending();
+    void sortByMenuDescending();
     ~Menu(); // desctructor
     
 private:

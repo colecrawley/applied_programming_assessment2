@@ -27,30 +27,53 @@ int main() {
     
     while (true)
     {
-        std::cout << "========== Welcome to Cole's Restaurant Menu! ==========\n";
-        std::cout << "1. View Menu\n";
-        std::cout << "2. Add food to Order\n";
-        std::cout << "3. Remove food from order\n";
-        std::cout << "4. View your Order\n";
-        std::cout << "5. Print Receipt\n";
-        std::cout << "6. Exit Restaurant\n";
+        std::cout << "\n========== Welcome to Cole's Restaurant Menu! ==========\n";
+        std::cout << "1. View Menu in ascending order\n";
+        std::cout << "2. View Menu in descending order\n";
+        std::cout << "3. Add food to Order\n";
+        std::cout << "4. Remove food from order\n";
+        std::cout << "5. View your Order\n";
+        std::cout << "6. Print Receipt\n";
+        std::cout << "7. View current orders\n";
+        std::cout << "8. Exit Restaurant\n";
         std::cout << "=========================================================\n";
         
         int user_choice;
         
-        std::cout << "Enter a number: ";
-        std::cin >> user_choice;
+        while (true)
+        {
+            std::cout << "Enter a number: ";
+            std::cin >> user_choice;
+            
+            if (std::cin.fail())
+            {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "Invalid answer, please try again! " << std::endl;
+            }
+            else
+            {
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                break;
+            }
+        }
         
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        //std::cin.clear();
+        //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         
         switch (user_choice)
         {
             case 1:
+                menu.sortByMenuPriceAscending();
                 std::cout << menu.toString() << std::endl;
                 break;
                 
             case 2:
+                menu.sortByMenuDescending();
+                std::cout << menu.toString() << std::endl;
+                break;
+                
+            case 3:
             {
                 std::string foodName;
                 std::cout << "Enter the number of the item to add: ";
@@ -64,6 +87,16 @@ int main() {
                     Item* chosenItem = menu.getItemOnMenu(itemNumber - 1);
                     order.add(chosenItem);
                     //std::cout << chosenItem->getFoodName() << " has been added to your order!" << std::endl;
+                    /*std::vector<int> itemIndices;
+                    int itemIndex;
+                    std::cout << "Enter the food numbers you want to add: [enter -1 to finish order]: ";
+                    
+                    while (std::cin >> itemIndex && itemIndex != -1)
+                    {
+                        itemIndices.push_back(itemIndex);
+                    }
+                    
+                    menu.multipleItemsToOrder(orders[itemNumber - 1], itemIndices);*/
                 }
                 else
                 {
@@ -72,7 +105,7 @@ int main() {
                 break;
             }
                 
-            case 3:
+            case 4:
             {
                 std::cout << "========== Your Order ==========\n";
                 const std::vector<Item*>& orderedItems = order.getOrderedItems();
@@ -98,7 +131,7 @@ int main() {
                 break;
             }
                 
-            case 4:
+            case 5:
             {
                 
                 std::cout << "========== Your Order ==========\n";
@@ -114,11 +147,43 @@ int main() {
                 break;
             }
                 
-            case 5:
+            case 6:
                 order.printReceipt("/Users/colecrawley/Desktop/applied_programming_assessment2/applied_programming_assessment2/applied_programming_assessment2/receipt.txt");
                 break;
                 
-            case 6:
+            case 7:
+                
+            {
+                std::vector<int> itemIndices;
+                int itemIndex;
+                
+                std::cout << "Enter the numbers of the items on the menu you want to add to your order (separate your choices with spaces, finish with -1): ";
+                
+                while (std::cin >> itemIndex)
+                {
+                    if (itemIndex == -1)
+                    {
+                        break;
+                    }
+                    itemIndices.push_back(itemIndex);
+                }
+                
+                for (int index : itemIndices)
+                {
+                    if (index >= 1 && index <= menu.getMenuSize())
+                    {
+                        Item* chosenItem = menu.getItemOnMenu(index - 1);
+                        order.add(chosenItem);
+                    }
+                    else
+                    {
+                        std::cout << "Invalid item number " << index << ". Item skipped.";
+                    }
+                }
+                break;
+            }
+                
+            case 8:
                 std::cout << "Exiting the Restaurant.\n";
                 return 0;
                 

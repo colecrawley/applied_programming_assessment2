@@ -6,6 +6,7 @@
 #include "Itemlist.hpp"
 #include "item.hpp"
 #include "menu.hpp"
+#include "order.hpp"
 #include <cstdlib>
 
 Menu::Menu(std::string filepath) {
@@ -134,7 +135,7 @@ void Menu::printItemsByType(char itemType) const {
 
 std::string Menu::toString() const {
     std::stringstream result;
-    result << "========== Menu By Cole Crawley ==========\n";
+    result << "\n========== Menu By Cole Crawley ==========\n";
     
     int itemNumber = 1;
 
@@ -191,4 +192,18 @@ std::string Menu::toLowerCase(const std::string& str) const
 std::vector<Item*> Menu::getItemsForReceipt() const
 {
     return ItemsonMenu;
+}
+
+void Menu::sortByMenuPriceAscending()
+{
+    std::sort(ItemsonMenu.begin(), ItemsonMenu.end(), [](Item* a, Item* b) {
+        return a->getFoodPrice() < b->getFoodPrice();
+    });
+}
+
+void Menu::sortByMenuDescending()
+{
+    std::sort(ItemsonMenu.begin(), ItemsonMenu.end(), [](Item* a, Item* b) {
+        return a->getFoodPrice() > b->getFoodPrice();
+    });
 }
