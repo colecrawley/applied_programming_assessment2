@@ -1,9 +1,11 @@
 ===== ORDER =====
-(1)Nachos: $4.99, 600 calories,  (shareable)
-(2)Buffalo wings: $3.99, 450 calories,  (twoForOne)
-(3)Buffalo wings: $3.99, 450 calories,  (twoForOne)
-(4)Mac & cheese: $7.99, 850 calories
-(5)Coke: $2.50: 140 calories, 330ml, 0.00%
-(6)Red wine: $4.00: 170 calories, 175ml, 12.50%
-Total: $23.47
+(1)Burger: $9.99, 950 calories
+(2)Fish & chips: $8.99, 1000 calories
+(3)Mac & cheese: $7.99, 850 calories
+(4)Fish & chips: $8.99, 1000 calories
+(5)Fish & chips: $8.99, 1000 calories
+(6)Fish & chips: $8.99, 1000 calories
+(7)Buffalo wings: $3.99, 450 calories,  (twoForOne)
+(8)Buffalo wings: $3.99, 450 calories,  (twoForOne)
+Total: $57.93
 Savings: $3.99

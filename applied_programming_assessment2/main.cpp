@@ -21,7 +21,7 @@
 
 int main() {
     
-    Menu menu("/Users/colecrawley/Desktop/applied_programming_assessment2/applied_programming_assessment2/applied_programming_assessment2/menu.csv");
+    Menu menu("menu.csv");
     
     Order order;
     
@@ -34,7 +34,7 @@ int main() {
         std::cout << "4. Remove food from order\n";
         std::cout << "5. View your Order\n";
         std::cout << "6. Print Receipt\n";
-        std::cout << "7. View current orders\n";
+        std::cout << "7. Order Multiple items at once\n";
         std::cout << "8. Exit Restaurant\n";
         std::cout << "=========================================================\n";
         
@@ -148,7 +148,7 @@ int main() {
             }
                 
             case 6:
-                order.printReceipt("/Users/colecrawley/Desktop/applied_programming_assessment2/applied_programming_assessment2/applied_programming_assessment2/receipt.txt");
+                order.printReceipt("receipt.txt");
                 break;
                 
             case 7:
