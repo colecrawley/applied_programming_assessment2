@@ -154,6 +154,8 @@ int main() {
             case 7:
                 
             {
+                std::cout << menu.toString();
+                
                 std::vector<int> itemIndices;
                 int itemIndex;
                 

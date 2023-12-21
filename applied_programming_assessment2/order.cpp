@@ -88,25 +88,22 @@ double Order::calculateTotal() const
     return total_amount;
 }
 
+// Inside Order class in order.cpp
 std::string Order::toString() const
 {
     std::stringstream result;
     result << "===== ORDER =====\n";
     
-    int indexItem = 1; //starts the menu on 1 instead of 0
-    
-    double total = 0.0; //total
-    double savings = 0.0; // discount
+    int indexItem = 1;
+    double total = 0.0;
+    double savings = 0.0;
     int eligible_twoForOne = 0;
-    
-    
-    
-    
-    for (const auto& item: itemsInOrder)
+
+    for (const auto& item : itemsInOrder)
     {
         result << "(" << indexItem << ")" << item->toString() << "\n";
         total += item->getFoodPrice();
-        
+
         if (item->getItemType() == 'a' && dynamic_cast<Appetiser*>(item)->getFoodTwoForOne())
         {
             eligible_twoForOne++;
@@ -114,22 +111,17 @@ std::string Order::toString() const
             {
                 savings += item->getFoodPrice();
             }
-            
-            //savings += item->getFoodPrice();
         }
-        
+
         indexItem++;
     }
-    
+
     if (eligible_twoForOne >= 2)
     {
         total -= savings;
-        
         result << "Total: $" << std::fixed << std::setprecision(2) << total << "\n";
     }
-    
-    //result << "Total: $" << std::fixed << std::setprecision(2) << total << "\n";
-    
+
     if (savings > 0)
     {
         result << "Savings: $" << std::fixed << std::setprecision(2) << savings << "\n";
@@ -138,9 +130,10 @@ std::string Order::toString() const
     {
         result << "Savings: $0.00\n";
     }
-    
+
     return result.str();
 }
+
 
 void Order::printReceipt(const std::string& filePath) const
 {

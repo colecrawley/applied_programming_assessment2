@@ -8,6 +8,8 @@
 #include "menu.hpp"
 #include "order.hpp"
 #include <cstdlib>
+#include <map>
+#include <algorithm>
 
 Menu::Menu(std::string filepath) {
     std::ifstream file(filepath);
@@ -106,28 +108,13 @@ Menu::Menu(std::string filepath) {
 
 
 
-void Menu::printItemsByType(char itemType) const {
-    std::string category;
-
-    switch (itemType) {
-        case 'a':
-            category = "Appetisers";
-            break;
-        case 'm':
-            category = "Main dishes";
-            break;
-        case 'b':
-            category = "Beverages";
-            break;
-        default:
-            std::cerr << "Invalid item type: " << itemType << std::endl;
-            return;
-    }
-
-    std::cout << category << std::endl;
-
-    for (const auto& item : ItemsonMenu) {
-        if (item->getItemType() == itemType) {
+void Menu::printItemsByType(char itemType) const
+{
+    // Iterate through items and print only those of the specified type
+    for (const auto& item : ItemsonMenu)
+    {
+        if (item->getItemType() == itemType)
+        {
             std::cout << item->toString() << std::endl;
         }
     }
@@ -135,17 +122,35 @@ void Menu::printItemsByType(char itemType) const {
 
 std::string Menu::toString() const {
     std::stringstream result;
-    result << "\n========== Menu By Cole Crawley ==========\n";
-    
+    result << "========== Menu By Cole Crawley ==========\n";
+
     int itemNumber = 1;
 
-    for (const auto& item : ItemsonMenu) {
-        result << itemNumber << ".) " << item->toString() << "\n";
-        itemNumber++;
+    std::map<char, std::string> categories = {
+        {'a', "Appetizers"},
+        {'b', "Beverages"},
+        {'m', "Main Course"}
+    };
+
+    for (const auto& categoryPair : categories) {
+        char itemType = categoryPair.first;
+        const std::string& category = categoryPair.second;
+
+        result << "========== " << category << " ==========\n";
+
+        for (const auto& item : ItemsonMenu) {
+            if (item->getItemType() == itemType) {
+                result << "(" << itemNumber << ") " << item->toString() << "\n";
+                itemNumber++;
+            }
+        }
     }
 
     return result.str();
 }
+
+
+
 
 Menu::~Menu() {
     for (auto& item : ItemsonMenu) {
@@ -159,17 +164,45 @@ int Menu::getMenuSize() const {
 }
 
 Item* Menu::getItemOnMenu(int index) const {
-    if (index >= 0 && index < getMenuSize()) {
-        return ItemsonMenu[index];
-    } else {
-        return nullptr;
+    int itemNumber = 0;
+
+    for (const auto& item : ItemsonMenu) {
+        if (item->getItemType() == 'a') {
+            if (index == itemNumber) {
+                return item;
+            }
+            itemNumber++;
+        }
     }
+
+    for (const auto& item : ItemsonMenu) {
+        if (item->getItemType() == 'b') {
+            if (index == itemNumber) {
+                return item;
+            }
+            itemNumber++;
+        }
+    }
+
+    for (const auto& item : ItemsonMenu) {
+        if (item->getItemType() == 'm') {
+            if (index == itemNumber) {
+                return item;
+            }
+            itemNumber++;
+        }
+    }
+
+    return nullptr;
 }
+
+
 
 Item* Menu::findItemByName(const std::string &itemName) const
 {
+
     
-    std::string lowercaseFood = toLowerCase(itemName);
+    /*std::string lowercaseFood = toLowerCase(itemName);
     for (const auto& item : ItemsonMenu)
     {
         std::string currentFoodName = toLowerCase(item->getFoodName());
@@ -179,8 +212,28 @@ Item* Menu::findItemByName(const std::string &itemName) const
         }
     }
     
-    return nullptr;
+    return nullptr;*/
+        
+    std::string lowercaseFood = toLowerCase(itemName);
+
+        int index = 1; // Starting item number
+
+        for (const auto& item : ItemsonMenu)
+        {
+            std::string currentFoodName = toLowerCase(item->getFoodName());
+
+            if (currentFoodName == lowercaseFood)
+            {
+                return item;
+            }
+
+            ++index; // Increment item number
+        }
+
+        return nullptr;
 }
+
+
 
 std::string Menu::toLowerCase(const std::string& str) const
 {
@@ -194,16 +247,39 @@ std::vector<Item*> Menu::getItemsForReceipt() const
     return ItemsonMenu;
 }
 
-void Menu::sortByMenuPriceAscending()
-{
-    std::sort(ItemsonMenu.begin(), ItemsonMenu.end(), [](Item* a, Item* b) {
-        return a->getFoodPrice() < b->getFoodPrice();
-    });
+void Menu::sortByMenuPriceAscending() {
+    sortItemsByPrice('a', true);  // 'a' for Appetizers
+    sortItemsByPrice('b', true);  // 'b' for Beverages
+    sortItemsByPrice('m', true);  // 'm' for Main Course
 }
 
-void Menu::sortByMenuDescending()
-{
-    std::sort(ItemsonMenu.begin(), ItemsonMenu.end(), [](Item* a, Item* b) {
-        return a->getFoodPrice() > b->getFoodPrice();
-    });
+void Menu::sortByMenuDescending() {
+    sortItemsByPrice('a', false);  // 'a' for Appetizers
+    sortItemsByPrice('b', false);  // 'b' for Beverages
+    sortItemsByPrice('m', false);  // 'm' for Main Course
 }
+
+void Menu::sortItemsByPrice(char itemType, bool ascending) {
+    std::vector<Item*> categoryItems;
+
+    // Extract items of the specified category
+    for (const auto& item : ItemsonMenu) {
+        if (item->getItemType() == itemType) {
+            categoryItems.push_back(item);
+        }
+    }
+
+    // Sort items in the category based on price
+    std::sort(categoryItems.begin(), categoryItems.end(), [ascending](Item* a, Item* b) {
+        return ascending ? a->getFoodPrice() < b->getFoodPrice() : a->getFoodPrice() > b->getFoodPrice();
+    });
+
+    // Update the main list with the sorted items
+    int categoryIndex = 0;
+    for (auto& item : ItemsonMenu) {
+        if (item->getItemType() == itemType) {
+            item = categoryItems[categoryIndex++];
+        }
+    }
+}
+

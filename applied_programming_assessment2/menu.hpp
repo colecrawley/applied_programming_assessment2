@@ -36,7 +36,7 @@ public:
     
 private:
     std::vector<Item*> ItemsonMenu;
-    
+    void sortItemsByPrice(char itemType, bool ascending);
 };
 
 #endif /* MENU_HPP */
