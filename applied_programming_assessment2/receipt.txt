@@ -1,12 +1,7 @@
 ===== ORDER =====
-(1)Burger: $9.99, 950 calories
-(2)Red wine: $4.00: 170 calories, 175ml, 12.50%
-(3)Lager: $3.50: 200 calories, 568ml, 4.50%
-(4)Burger: $9.99, 950 calories
-(5)Burger: $9.99, 950 calories
-(6)Coke: $2.50: 140 calories, 330ml, 0.00%
-(7)Buffalo wings: $3.99, 450 calories,  (twoForOne)
-(8)Buffalo wings: $3.99, 450 calories,  (twoForOne)
-(9)Nachos: $4.99, 600 calories,  (shareable)
-Total: $48.95
-Savings: $3.99
+(1)Fish & chips: $8.99, 1000 calories
+(2)Mac & cheese: $7.99, 850 calories
+(3)Burger: $9.99, 950 calories
+(4)Water: $1.50: 0 calories, 330ml, 0.00%
+Total: $28.47
+Savings: $0.00

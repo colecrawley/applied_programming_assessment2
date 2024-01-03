@@ -70,10 +70,10 @@
 				B438E7B82B2CD86200B66D76 /* main.cpp */,
 				B47803602B1E435200B1F763 /* item.cpp */,
 				B47803632B1E9EDF00B1F763 /* menu.cpp */,
+				B438E7BA2B2CFEE100B66D76 /* order.cpp */,
 				B47803672B1FCD4F00B1F763 /* Itemlist.hpp */,
 				B47803642B1E9EDF00B1F763 /* menu.hpp */,
 				B47803612B1E435200B1F763 /* item.hpp */,
-				B438E7BA2B2CFEE100B66D76 /* order.cpp */,
 				B438E7BB2B2CFEE100B66D76 /* order.hpp */,
 			);
 			path = applied_programming_assessment2;

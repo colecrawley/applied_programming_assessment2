@@ -11,44 +11,55 @@
 #include <sstream>
 #include <iomanip>
 
+
+//Initializing the Item, with name, price and calories
 Item::Item(std::string name, double price, int calories) : name(name), price(price), calories(calories) {}
 
+
+//This is the output for the terminal
 std::string Item::toString() const
 {
     std::stringstream result;
-    result << getFoodName() << ": $" << getFoodPrice() << ", " << getFoodCalories() << " calories";
+    result << getTheMenuFoodName() << ": $" << getTheMenuFoodPrice() << ", " << getTheMenuFoodCalories() << " calories";
     
     return result.str();
 }
 
+//This is my Item destructor
 Item::~Item() {}
 
-std::string Item::getFoodName() const
+
+//This return the name from the menu
+std::string Item::getTheMenuFoodName() const
 {
     return name;
 }
 
-double Item::getFoodPrice() const
+
+//This returns the price from the menu
+double Item::getTheMenuFoodPrice() const
 {
     return price;
 }
 
-int Item::getFoodCalories() const
+
+////This returns the calories from the menu
+int Item::getTheMenuFoodCalories() const
 {
     return calories;
 }
 
+
+//This is the appetizer constructor being initialized
 Appetiser::Appetiser(std::string name, double price, int calories, bool shareable, bool twoForOne) : Item(name, price, calories), shareable(shareable), twoForOne(twoForOne) {}
 
+
+//Output for the terminal
 std::string Appetiser::toString() const
 {
     std::stringstream result;
     
-    result << Item::getFoodName() << ": $" << Item::getFoodPrice() << ", " << Item::getFoodCalories() << " calories, ";
-    
-    //result << Item::toString() << " (Appetiser)";
-    
-    //result << " (Appetiser)";
+    result << Item::getTheMenuFoodName() << ": $" << Item::getTheMenuFoodPrice() << ", " << Item::getTheMenuFoodCalories() << " calories, ";
     
     if (shareable)
     {
@@ -59,69 +70,67 @@ std::string Appetiser::toString() const
         result << " (twoForOne)";
     }
     
-    
-    /*switch (shareable + 2 * twoForOne)
-    {
-        case 0: break; //doesn't apply
-        case 1: result += " (shareable)"; break; // only shareable meals
-        case 2: result += " (2-4-1)"; break; // only 2-4-1 meals
-        case 3: result += " (shareable) (2-4-1)"; break; // both shareable and 2-4-1 meals
-    }*/
-    
     return result.str();
     
 };
 
+
+//Returns the shareable data
 bool Appetiser::getFoodShareable()
 {
     return shareable;
 }
 
+
+//returns the two for one data
 bool Appetiser::getFoodTwoForOne()
 {
     return twoForOne;
 }
 
+
+//Initializing the main course object
 MainCourse::MainCourse(std::string name, double price, int calories) : Item(name, price, calories) {}
 
+
+//Outputs to the terminal
 std::string MainCourse::toString() const
 {
     std::stringstream result;
     
-    result << Item::getFoodName() << ": $" << Item::getFoodPrice() << ", " << Item::getFoodCalories() << " calories";
+    result << Item::getTheMenuFoodName() << ": $" << Item::getTheMenuFoodPrice() << ", " << Item::getTheMenuFoodCalories() << " calories";
     
-    //return Item::toString() + " (MainCourse)";
     return result.str();
 }
 
+
+//Initilizes the beverage object
 Beverage::Beverage(std::string name, double price, int calories, double abv, int volume) : Item(name, price, calories), abv(abv), volume(volume) {}
 
+
+//Outputs to the terminal
 std::string Beverage::toString() const
 {
     std::stringstream result;
     
-    result << getFoodName() << ": $" << std::fixed << std::setprecision(2) << getFoodPrice() << ": "
-           << std::to_string(getFoodCalories()) << " calories, " << std::to_string(getFoodVolume())
-           << "ml, " << std::setprecision(2) << getFoodABV() << "%";
-    
-    
-    
-    
-    //std::stringstream result;
-    //result << Item::toString() << " (Beverage), " << volume << "ml, " << abv << "% abv";
-    
-    /*result += " (Beverage)";
-    result += ", " + std::to_string(volume) + "ml, " + std::to_string(abv) + "% abv";*/
+    result << getTheMenuFoodName() << ": $" << std::fixed << std::setprecision(2) << getTheMenuFoodPrice() << ": "
+           << std::to_string(getTheMenuFoodCalories()) << " calories, " << std::to_string(getTheDrinkVolume())
+           << "ml, " << std::fixed << std::setprecision(2) << getTheDrinkABV() << "%";
+
     
     return result.str();
 }
 
-double Beverage::getFoodABV() const
+
+//Returns the alcohol value
+double Beverage::getTheDrinkABV() const
 {
     return abv;
 }
 
-int Beverage::getFoodVolume() const
+
+//returns the volume value
+int Beverage::getTheDrinkVolume() const
 {
     return volume;
 }

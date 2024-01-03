@@ -11,14 +11,20 @@
 #include <map>
 #include <algorithm>
 
+
+//Menu Constructor with filepath for the menu.csv file
 Menu::Menu(std::string filepath) {
     std::ifstream file(filepath);
-
+    
+    
+//checks if the program can access the file, if not, throw out this error
     if (!file.is_open()) {
         std::cerr << "Error: Could not open the file " << filepath << std::endl;
         return;
     }
 
+    
+//this parses each line and checks the data on the csv file
     std::string line = "";
 
     while (std::getline(file, line)) {
@@ -34,6 +40,10 @@ Menu::Menu(std::string filepath) {
         int counter = 0;
         std::string value = "";
 
+//on the csv file, it is separate into commas, so after each comma, it's a different attribute of the menu item
+        
+//so I used a switch case to determine what attribute it is because the istringstream wasn't working for me
+        
         for (int i = 0; i <= line.size()-1; i++) {
             if (line[i] == ',' || i >= line.size()-1) {
                 switch (counter) {
@@ -56,20 +66,18 @@ Menu::Menu(std::string filepath) {
             }
         }
 
+//this here is to make sure that every single item has tha main 4 attributes. name, price, calories and type
         if (counter < 4) {
             std::cerr << "Error parsing line: " << line << std::endl;
             continue;
         }
 
+//this is determinging the type of menu item it is and adding it to its corresponding list
+        
+//These menu items are then added to the ItemsonMenu list which will store all the menu items
         switch (itemtype) {
             case 'a':
             {
-                //char shareableChar = ' ', twoForOneChar = ' ';
-                //std::istringstream iss(name);
-                //iss >> std::quoted(name) >> shareableChar >> twoForOneChar;
-               // if (shareable  == "y");
-                //twoForOne  == "y";
-                //std::cout<<"taste the case:"<<shareable<<twoForOne;
                 ItemsonMenu.push_back(new Appetiser(name, price, calories, shareable, twoForOne));
                 break;
             }
@@ -91,6 +99,7 @@ Menu::Menu(std::string filepath) {
                 break;
             }
 
+//if there is as item that is not listed on the menu then it throw an error for it
             default:
             {
                 std::cerr << "Unknown menu item type: " << itemtype << " in line: " << line << std::endl;
@@ -102,72 +111,69 @@ Menu::Menu(std::string filepath) {
     file.close();
 }
 
+//This is the menu destructor
+Menu::~Menu() {}
 
 
-
-
-
-
-void Menu::printItemsByType(char itemType) const
+//This goes through everything in the Itemsonmenu list and prints each item on the list
+void Menu::printTheMenuItemsByType(char itemType) const
 {
-    // Iterate through items and print only those of the specified type
     for (const auto& item : ItemsonMenu)
     {
-        if (item->getItemType() == itemType)
+        if (item->getTheFoodType() == itemType)
         {
             std::cout << item->toString() << std::endl;
         }
     }
 }
 
+
+//This is the main output of the Menu, with all the formatting and categorization
 std::string Menu::toString() const {
     std::stringstream result;
     result << "========== Menu By Cole Crawley ==========\n";
 
-    int itemNumber = 1;
+    int itemNumber = 1; // menu item starts at 1
 
+// these are the different caterogies that the menu is split by
     std::map<char, std::string> categories = {
         {'a', "Appetizers"},
         {'b', "Beverages"},
         {'m', "Main Course"}
     };
 
-    for (const auto& categoryPair : categories) {
-        char itemType = categoryPair.first;
-        const std::string& category = categoryPair.second;
-
-        result << "========== " << category << " ==========\n";
-
+    // this is a lambda function to print out the items on the menu in a neat way
+    auto printItemsByCategory = [&](char itemType) {
+        result << "========== " << categories[itemType] << " ==========\n";
         for (const auto& item : ItemsonMenu) {
-            if (item->getItemType() == itemType) {
-                result << "(" << itemNumber << ") " << item->toString() << "\n";
-                itemNumber++;
+            if (item->getTheFoodType() == itemType) {
+                result << "(" << itemNumber++ << ") " << item->toString() << "\n";
             }
         }
+    };
+
+//this one prints all the items for each category
+    for (const auto& categoryPair : categories) {
+        printItemsByCategory(categoryPair.first);
     }
 
     return result.str();
 }
 
 
-
-
-Menu::~Menu() {
-    for (auto& item : ItemsonMenu) {
-        delete item;
-        item = nullptr;
-    }
-}
-
-int Menu::getMenuSize() const {
+//This retrieves the number of menu items on the menu
+int Menu::getTheMenuSize() const {
     return static_cast<int>(ItemsonMenu.size());
 }
 
-Item* Menu::getItemOnMenu(int index) const {
+
+//This gives us the specific menu item from its numbered position, it searches by using the items type whether it be Appetizer, beverage or main course
+Item* Menu::getTheItemOnMenu(int index) const {
     int itemNumber = 0;
 
+    //appetizer
     for (const auto& item : ItemsonMenu) {
-        if (item->getItemType() == 'a') {
+        if (item->getTheFoodType() == 'a') {
             if (index == itemNumber) {
                 return item;
             }
@@ -175,8 +181,9 @@ Item* Menu::getItemOnMenu(int index) const {
         }
     }
 
+    //beverage
     for (const auto& item : ItemsonMenu) {
-        if (item->getItemType() == 'b') {
+        if (item->getTheFoodType() == 'b') {
             if (index == itemNumber) {
                 return item;
             }
@@ -184,8 +191,9 @@ Item* Menu::getItemOnMenu(int index) const {
         }
     }
 
+    //main course
     for (const auto& item : ItemsonMenu) {
-        if (item->getItemType() == 'm') {
+        if (item->getTheFoodType() == 'm') {
             if (index == itemNumber) {
                 return item;
             }
@@ -197,87 +205,85 @@ Item* Menu::getItemOnMenu(int index) const {
 }
 
 
-
-Item* Menu::findItemByName(const std::string &itemName) const
+//I use this to find the menu item using its name, I've implemented a toLowercase function to handle input in a neat and consistent way so that there are no errors when searching for names on the menu
+Item* Menu::findTheMenuItemByName(const std::string &itemName) const
 {
-
-    
-    /*std::string lowercaseFood = toLowerCase(itemName);
-    for (const auto& item : ItemsonMenu)
-    {
-        std::string currentFoodName = toLowerCase(item->getFoodName());
-        if (currentFoodName == lowercaseFood)
-        {
-            return item;
-        }
-    }
-    
-    return nullptr;*/
         
-    std::string lowercaseFood = toLowerCase(itemName);
+    //this is the function where I format the inputs to lower case
+    std::string lowercaseFood = wordsToLowerCase(itemName);
 
-        int index = 1; // Starting item number
+        int index = 1; // Starting menu item number
 
         for (const auto& item : ItemsonMenu)
         {
-            std::string currentFoodName = toLowerCase(item->getFoodName());
+            std::string currentFoodName = wordsToLowerCase(item->getTheMenuFoodName());
 
             if (currentFoodName == lowercaseFood)
             {
                 return item;
             }
-
-            ++index; // Increment item number
+            
+            //this one adds to the index so it moves on to the nest item in the menu
+            ++index;
         }
 
         return nullptr;
 }
 
 
-
-std::string Menu::toLowerCase(const std::string& str) const
+//This function is what is used above, it turns all input into lowercase strings so that it is easier and more consistent to handle data
+std::string Menu::wordsToLowerCase(const std::string& str) const
 {
     std::string result = str;
     std::transform(result.begin(), result.end(), result.begin(), ::tolower);
     return result;
 }
 
-std::vector<Item*> Menu::getItemsForReceipt() const
+
+//This function gives us a list that contains pointers to the menu items, it is for the outputting to the reciept file
+std::vector<Item*> Menu::getTheMenuItemsForReceipt() const
 {
     return ItemsonMenu;
+    
 }
 
-void Menu::sortByMenuPriceAscending() {
-    sortItemsByPrice('a', true);  // 'a' for Appetizers
-    sortItemsByPrice('b', true);  // 'b' for Beverages
-    sortItemsByPrice('m', true);  // 'm' for Main Course
+//This sorts the menu and each category in ascending order in terms of price
+void Menu::sortTheMenuAscendingOrder() {
+    sortTheMenuItemsByPrice('a', true);  //Appetizers
+    sortTheMenuItemsByPrice('b', true);  //Beverages
+    sortTheMenuItemsByPrice('m', true);  //Main Course
 }
 
-void Menu::sortByMenuDescending() {
-    sortItemsByPrice('a', false);  // 'a' for Appetizers
-    sortItemsByPrice('b', false);  // 'b' for Beverages
-    sortItemsByPrice('m', false);  // 'm' for Main Course
+//This sorts the menu and each category in descending order in terms of price
+void Menu::sortTheMenuDescendingOrder() {
+    sortTheMenuItemsByPrice('a', false);  //Appetizers
+    sortTheMenuItemsByPrice('b', false);  //Beverages
+    sortTheMenuItemsByPrice('m', false);  //Main Course
 }
 
-void Menu::sortItemsByPrice(char itemType, bool ascending) {
+
+//This is the function that allows us to sort the menu items in either ascending or descending order based on the brief
+void Menu::sortTheMenuItemsByPrice(char itemType, bool ascending)
+{
+    
     std::vector<Item*> categoryItems;
-
-    // Extract items of the specified category
+    
+    // we create a new list and add the menu items into that list above
     for (const auto& item : ItemsonMenu) {
-        if (item->getItemType() == itemType) {
+        if (item->getTheFoodType() == itemType) {
             categoryItems.push_back(item);
         }
     }
-
-    // Sort items in the category based on price
+    
+    // I am sorting the items here based on price using a lambda function so its a more quick way of typing it out. It sorts it and it checks the boolean value ascending, if we give it the value true, it is ascending, if it is false, it is descending
     std::sort(categoryItems.begin(), categoryItems.end(), [ascending](Item* a, Item* b) {
-        return ascending ? a->getFoodPrice() < b->getFoodPrice() : a->getFoodPrice() > b->getFoodPrice();
+        return ascending ? a->getTheMenuFoodPrice() < b->getTheMenuFoodPrice() : a->getTheMenuFoodPrice() > b->getTheMenuFoodPrice();
     });
-
-    // Update the main list with the sorted items
+    
+    // referesh the original list with the new items in order
     int categoryIndex = 0;
     for (auto& item : ItemsonMenu) {
-        if (item->getItemType() == itemType) {
+        if (item->getTheFoodType() == itemType) {
             item = categoryItems[categoryIndex++];
         }
     }
